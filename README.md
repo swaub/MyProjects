@@ -6,27 +6,16 @@ A comprehensive repository of scripts, tools, and applications organized by prog
 
 ```
 MyProjects/
-├── Batch/
-│   ├── Automation/       - Task automation scripts (5 scripts)
-│   ├── FileManagement/   - File operations and organization (5 scripts)
-│   ├── NetworkTools/     - Network utilities and diagnostics (5 scripts)
-│   └── SystemTools/      - System administration and diagnostics (5 scripts)
+├── C#/
+│   └── Automation/
+│       └── TaskMaster/        - Task management WPF application
 │
-├── PowerShell/           - [Planned] PowerShell scripts
-│   ├── ActiveDirectory/
-│   ├── Automation/
-│   ├── FileManagement/
-│   ├── NetworkTools/
-│   └── SystemTools/
+├── Python/
+│   └── Automation/
+│       ├── MCIGN_Scan_and_Snipe/  - Minecraft IGN scanning tool
+│       └── TextToSpeech/          - Text-to-speech conversion utility
 │
-├── Python/               - [Planned] Python projects
-│   ├── Automation/
-│   ├── DataProcessing/
-│   ├── NetworkTools/
-│   ├── SystemTools/
-│   └── WebScraping/
-│
-└── C++/                  - [Planned] C++ projects
+└── C++/                   - [Planned] C++ projects
     ├── Games/
     ├── NetworkTools/
     ├── Performance/
@@ -35,41 +24,24 @@ MyProjects/
 
 ## 🚀 Quick Navigation
 
-### Batch Scripts (20 scripts)
+### C# Projects
 
-#### [Automation](Batch/Automation/) (5 scripts)
-- **Backup_Automation_Suite.bat** - Automated backup solution
-- **Startup_Optimizer.bat** - Windows startup optimization
-- **System_Cleaner_Pro.bat** - System cleaning and maintenance
-- **Task_Scheduler_Manager.bat** - Task scheduler management
-- **WiFi_Password_Viewer.bat** - WiFi password recovery tool
-
-#### [File Management](Batch/FileManagement/) (5 scripts)
-- **Batch_Rename_Tool.bat** - Bulk file renaming utility
-- **Directory_Analyzer.bat** - Directory analysis and reporting
-- **Duplicate_File_Hunter.bat** - Find and manage duplicate files
-- **File_Synchronizer.bat** - File synchronization tool
-- **Secure_File_Shredder.bat** - Secure file deletion
-
-#### [Network Tools](Batch/NetworkTools/) (5 scripts)
-- **DNS_Resolver_Tool.bat** - DNS resolution utility
-- **Firewall_Manager.bat** - Firewall configuration management
-- **Network_Connection_Scanner.bat** - Active network connection scanner
-- **Network_Traffic_Monitor.bat** - Network traffic monitoring
-- **Port_Scanner_Advanced.bat** - Advanced port scanning tool
-
-#### [System Tools](Batch/SystemTools/) (5 scripts)
-- **Event_Log_Analyzer.bat** - Windows event log analysis
-- **Hardware_Monitor.bat** - Hardware monitoring and reporting
-- **Process_Manager_Advanced.bat** - Advanced process management
-- **Service_Controller.bat** - Windows service management
-- **System_Diagnostics_Analyzer.bat** - System diagnostics and health checks
-
-### PowerShell Scripts
-*Coming soon - Directory structure prepared*
+#### [TaskMaster](C%23/Automation/TaskMaster/)
+- **Description:** A modern WPF task management application for Windows
+- **Category:** Automation
+- **Features:** Task tracking, scheduling, and productivity management
 
 ### Python Projects
-*Coming soon - Directory structure prepared*
+
+#### [MCIGN_Scan_and_Snipe](Python/Automation/MCIGN_Scan_and_Snipe/)
+- **Description:** Minecraft IGN (In-Game Name) scanner and availability checker
+- **Category:** Automation
+- **Tech:** Python 3.x
+
+#### [TextToSpeech](Python/Automation/TextToSpeech/)
+- **Description:** Convert text files to speech with customizable voice options
+- **Category:** Automation
+- **Tech:** Python 3.x with TTS libraries
 
 ### C++ Projects
 *Coming soon - Directory structure prepared*
@@ -84,10 +56,9 @@ When adding a new project:
 
 ## 🛠️ Technologies
 
-- **Batch** - Windows batch scripting
-- **PowerShell** - Windows PowerShell 5.1+
-- **Python** - Python 3.x
-- **C++** - C++11 and above
+- **C#** - .NET Framework, WPF for desktop applications
+- **Python** - Python 3.x for automation and utilities
+- **C++** - C++11 and above (planned)
 
 ## 📄 License
 

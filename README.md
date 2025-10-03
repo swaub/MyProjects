@@ -83,7 +83,9 @@ When adding a new project:
 
 ## 📄 License
 
-Personal project collection - All rights reserved
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+You are free to use, modify, and distribute these projects as you wish.
 
 ## 👤 Author
 

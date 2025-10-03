@@ -7,59 +7,72 @@ A comprehensive repository of scripts, tools, and applications organized by prog
 ```
 MyProjects/
 ├── Batch/
-│   ├── SystemTools/      - System administration and diagnostics
-│   ├── NetworkTools/     - Network utilities and diagnostics
-│   ├── FileManagement/   - File operations and organization
-│   └── Automation/       - Task automation scripts
+│   ├── Automation/       - Task automation scripts (5 scripts)
+│   ├── FileManagement/   - File operations and organization (5 scripts)
+│   ├── NetworkTools/     - Network utilities and diagnostics (5 scripts)
+│   └── SystemTools/      - System administration and diagnostics (5 scripts)
 │
-├── PowerShell/
-│   ├── SystemTools/      - System administration utilities
-│   ├── NetworkTools/     - Network management scripts
-│   ├── FileManagement/   - File and folder operations
-│   ├── Automation/       - Automated tasks and workflows
-│   └── ActiveDirectory/  - AD management scripts
+├── PowerShell/           - [Planned] PowerShell scripts
+│   ├── ActiveDirectory/
+│   ├── Automation/
+│   ├── FileManagement/
+│   ├── NetworkTools/
+│   └── SystemTools/
 │
-├── Python/
-│   ├── SystemTools/      - System utilities
-│   ├── NetworkTools/     - Network tools and scanners
-│   ├── WebScraping/      - Web scraping tools
-│   ├── Automation/       - Automation scripts
-│   └── DataProcessing/   - Data analysis and processing
+├── Python/               - [Planned] Python projects
+│   ├── Automation/
+│   ├── DataProcessing/
+│   ├── NetworkTools/
+│   ├── SystemTools/
+│   └── WebScraping/
 │
-└── C++/
-    ├── SystemTools/      - System-level utilities
-    ├── NetworkTools/     - Network applications
-    ├── Performance/      - Performance-critical applications
-    └── Games/            - Game projects
+└── C++/                  - [Planned] C++ projects
+    ├── Games/
+    ├── NetworkTools/
+    ├── Performance/
+    └── SystemTools/
 ```
 
 ## 🚀 Quick Navigation
 
-### Batch Scripts
-- [System Tools](Batch/SystemTools/) - System diagnostics and management
-- [Network Tools](Batch/NetworkTools/) - Network utilities
-- [File Management](Batch/FileManagement/) - File operations
-- [Automation](Batch/Automation/) - Automated tasks
+### Batch Scripts (20 scripts)
+
+#### [Automation](Batch/Automation/) (5 scripts)
+- **Backup_Automation_Suite.bat** - Automated backup solution
+- **Startup_Optimizer.bat** - Windows startup optimization
+- **System_Cleaner_Pro.bat** - System cleaning and maintenance
+- **Task_Scheduler_Manager.bat** - Task scheduler management
+- **WiFi_Password_Viewer.bat** - WiFi password recovery tool
+
+#### [File Management](Batch/FileManagement/) (5 scripts)
+- **Batch_Rename_Tool.bat** - Bulk file renaming utility
+- **Directory_Analyzer.bat** - Directory analysis and reporting
+- **Duplicate_File_Hunter.bat** - Find and manage duplicate files
+- **File_Synchronizer.bat** - File synchronization tool
+- **Secure_File_Shredder.bat** - Secure file deletion
+
+#### [Network Tools](Batch/NetworkTools/) (5 scripts)
+- **DNS_Resolver_Tool.bat** - DNS resolution utility
+- **Firewall_Manager.bat** - Firewall configuration management
+- **Network_Connection_Scanner.bat** - Active network connection scanner
+- **Network_Traffic_Monitor.bat** - Network traffic monitoring
+- **Port_Scanner_Advanced.bat** - Advanced port scanning tool
+
+#### [System Tools](Batch/SystemTools/) (5 scripts)
+- **Event_Log_Analyzer.bat** - Windows event log analysis
+- **Hardware_Monitor.bat** - Hardware monitoring and reporting
+- **Process_Manager_Advanced.bat** - Advanced process management
+- **Service_Controller.bat** - Windows service management
+- **System_Diagnostics_Analyzer.bat** - System diagnostics and health checks
 
 ### PowerShell Scripts
-- [System Tools](PowerShell/SystemTools/) - System administration
-- [Network Tools](PowerShell/NetworkTools/) - Network management
-- [File Management](PowerShell/FileManagement/) - File operations
-- [Automation](PowerShell/Automation/) - Task automation
-- [Active Directory](PowerShell/ActiveDirectory/) - AD management
+*Coming soon - Directory structure prepared*
 
 ### Python Projects
-- [System Tools](Python/SystemTools/) - System utilities
-- [Network Tools](Python/NetworkTools/) - Network applications
-- [Web Scraping](Python/WebScraping/) - Web scraping tools
-- [Automation](Python/Automation/) - Automation scripts
-- [Data Processing](Python/DataProcessing/) - Data analysis
+*Coming soon - Directory structure prepared*
 
 ### C++ Projects
-- [System Tools](C++/SystemTools/) - System-level utilities
-- [Network Tools](C++/NetworkTools/) - Network applications
-- [Performance](C++/Performance/) - High-performance applications
-- [Games](C++/Games/) - Game development
+*Coming soon - Directory structure prepared*
 
 ## 📝 Contributing to This Repository
 

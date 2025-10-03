@@ -7,80 +7,79 @@ A comprehensive repository of scripts, tools, and applications organized by prog
 ```
 MyProjects/
 ├── C#/
-│   └── Automation/
-│       ├── AutoClicker/       - Configurable auto-clicking utility
-│       └── TaskMaster/        - Task management WPF application
+│   ├── AutoClicker/           - Configurable auto-clicking utility
+│   └── TaskMaster/            - Task management WPF application
 │
 ├── Python/
-│   ├── Automation/
-│   │   ├── MCIGN_Scan_and_Snipe/  - Minecraft IGN scanning tool
-│   │   ├── PasswordGenerator/     - Secure password generator with strength analysis
-│   │   └── TextToSpeech/          - Text-to-speech conversion utility
-│   └── NetworkTools/
-│       └── BandwidthMonitor/      - Real-time network bandwidth monitor
+│   ├── BandwidthMonitor/      - Real-time network bandwidth monitor
+│   ├── MCIGN_Scan_and_Snipe/  - Minecraft IGN scanning tool
+│   ├── PasswordGenerator/     - Secure password generator with strength analysis
+│   └── TextToSpeech/          - Text-to-speech conversion utility
 │
-└── C++/                   - [Planned] C++ projects
-    ├── Games/
-    ├── NetworkTools/
-    ├── Performance/
-    └── SystemTools/
+└── C++/
+    ├── FileEncryptionTool/    - AES file encryption/decryption utility
+    └── MemoryMonitor/         - Real-time process memory monitoring
 ```
 
 ## 🚀 Quick Navigation
 
 ### C# Projects
 
-#### [AutoClicker](C%23/Automation/AutoClicker/)
-- **Description:** Configurable auto-clicking utility for Windows with hotkey control
-- **Category:** Automation
+#### [AutoClicker](C%23/AutoClicker/)
+- **Description:** Configurable auto-clicking utility for Windows with customizable hotkey control
 - **Tech:** .NET 6.0 WPF with Win32 API
-- **Features:** Multiple click types, position modes, F6 hotkey, statistics tracking, customizable intervals
+- **Features:** Multiple click types, position modes, customizable hotkey, statistics tracking, adjustable intervals
 
-#### [TaskMaster](C%23/Automation/TaskMaster/)
+#### [TaskMaster](C%23/TaskMaster/)
 - **Description:** A modern WPF task management application for Windows
-- **Category:** Automation
+- **Tech:** .NET WPF
 - **Features:** Task tracking, scheduling, and productivity management
 
 ### Python Projects
 
-#### [MCIGN_Scan_and_Snipe](Python/Automation/MCIGN_Scan_and_Snipe/)
-- **Description:** Minecraft IGN (In-Game Name) scanner and availability checker
-- **Category:** Automation
-- **Tech:** Python 3.x
-
-#### [PasswordGenerator](Python/Automation/PasswordGenerator/)
-- **Description:** Generate secure passwords with customizable length and difficulty levels
-- **Category:** Automation
-- **Tech:** Python 3.x (no external dependencies)
-- **Features:** 5 difficulty levels, entropy calculation, crack time estimation, batch generation, save to file
-
-#### [TextToSpeech](Python/Automation/TextToSpeech/)
-- **Description:** Convert text files to speech with customizable voice options
-- **Category:** Automation
-- **Tech:** Python 3.x with TTS libraries
-
-#### [BandwidthMonitor](Python/NetworkTools/BandwidthMonitor/)
+#### [BandwidthMonitor](Python/BandwidthMonitor/)
 - **Description:** Real-time network bandwidth monitoring utility with upload/download speed tracking
-- **Category:** Network Tools
 - **Tech:** Python 3.x with psutil
 - **Features:** Interface selection, session statistics, packet tracking, clean real-time display
 
+#### [MCIGN_Scan_and_Snipe](Python/MCIGN_Scan_and_Snipe/)
+- **Description:** Minecraft IGN (In-Game Name) scanner and availability checker
+- **Tech:** Python 3.x
+
+#### [PasswordGenerator](Python/PasswordGenerator/)
+- **Description:** Generate secure passwords with customizable length and difficulty levels
+- **Tech:** Python 3.x (no external dependencies)
+- **Features:** 5 difficulty levels, entropy calculation, crack time estimation, batch generation, save to file
+
+#### [TextToSpeech](Python/TextToSpeech/)
+- **Description:** Convert text files to speech with customizable voice options
+- **Tech:** Python 3.x with TTS libraries
+
 ### C++ Projects
-*Coming soon - Directory structure prepared*
+
+#### [FileEncryptionTool](C++/FileEncryptionTool/)
+- **Description:** AES-256 file encryption and decryption utility with password protection
+- **Tech:** C++17 with OpenSSL/CryptoAPI
+- **Features:** Strong encryption, secure key derivation, progress tracking, batch processing
+
+#### [MemoryMonitor](C++/MemoryMonitor/)
+- **Description:** Real-time process memory monitoring and analysis tool
+- **Tech:** C++17 with Windows API
+- **Features:** Live memory tracking, process list, detailed statistics, leak detection
 
 ## 📝 Contributing to This Repository
 
 When adding a new project:
 1. Choose the appropriate language folder
-2. Select the correct category
-3. Create a folder for your project (if it's complex) or add the file directly
-4. Include a README.md in project folders explaining what it does
+2. Create a folder for your project
+3. Include a README.md explaining what it does
+4. Add source files and any necessary build instructions
 
 ## 🛠️ Technologies
 
 - **C#** - .NET Framework, WPF for desktop applications
 - **Python** - Python 3.x for automation and utilities
-- **C++** - C++11 and above (planned)
+- **C++** - C++17 and above for system tools and utilities
 
 ## 📄 License
 

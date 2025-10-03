@@ -13,6 +13,7 @@ MyProjects/
 ├── Python/
 │   ├── Automation/
 │   │   ├── MCIGN_Scan_and_Snipe/  - Minecraft IGN scanning tool
+│   │   ├── PasswordGenerator/     - Secure password generator with strength analysis
 │   │   └── TextToSpeech/          - Text-to-speech conversion utility
 │   └── NetworkTools/
 │       └── BandwidthMonitor/      - Real-time network bandwidth monitor
@@ -39,6 +40,12 @@ MyProjects/
 - **Description:** Minecraft IGN (In-Game Name) scanner and availability checker
 - **Category:** Automation
 - **Tech:** Python 3.x
+
+#### [PasswordGenerator](Python/Automation/PasswordGenerator/)
+- **Description:** Generate secure passwords with customizable length and difficulty levels
+- **Category:** Automation
+- **Tech:** Python 3.x (no external dependencies)
+- **Features:** 5 difficulty levels, entropy calculation, crack time estimation, batch generation, save to file
 
 #### [TextToSpeech](Python/Automation/TextToSpeech/)
 - **Description:** Convert text files to speech with customizable voice options

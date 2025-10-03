@@ -9,7 +9,6 @@ namespace AutoClicker
 {
     public partial class MainWindow : Window
     {
-        // Win32 API imports for mouse control
         [DllImport("user32.dll")]
         private static extern void mouse_event(uint dwFlags, uint dx, uint dy, uint dwData, int dwExtraInfo);
 
@@ -26,7 +25,6 @@ namespace AutoClicker
             public int Y;
         }
 
-        // Mouse event flags
         private const uint MOUSEEVENTF_LEFTDOWN = 0x0002;
         private const uint MOUSEEVENTF_LEFTUP = 0x0004;
         private const uint MOUSEEVENTF_RIGHTDOWN = 0x0008;
@@ -40,7 +38,7 @@ namespace AutoClicker
         private int _totalClicks = 0;
         private int _currentRunClicks = 0;
         private Stopwatch _stopwatch = new Stopwatch();
-        private uint _currentHotkeyVK = 0x75; // Default F6
+        private uint _currentHotkeyVK = 0x75;
         private IntPtr _windowHandle;
 
         public MainWindow()
@@ -59,7 +57,6 @@ namespace AutoClicker
 
         private void InitializeTimers()
         {
-            // Stats update timer (every 100ms)
             _statsTimer = new DispatcherTimer
             {
                 Interval = TimeSpan.FromMilliseconds(100)
@@ -72,7 +69,6 @@ namespace AutoClicker
             var source = System.Windows.Interop.HwndSource.FromHwnd(_windowHandle);
             source?.AddHook(HwndHook);
 
-            // Register the current hotkey
             if (_currentHotkeyVK != 0)
             {
                 RegisterHotKey(_windowHandle, 1, 0, _currentHotkeyVK);
@@ -91,10 +87,8 @@ namespace AutoClicker
         {
             e.Handled = true;
 
-            // Get the key pressed
             Key key = e.Key == Key.System ? e.SystemKey : e.Key;
 
-            // Ignore modifier keys alone
             if (key == Key.LeftCtrl || key == Key.RightCtrl ||
                 key == Key.LeftAlt || key == Key.RightAlt ||
                 key == Key.LeftShift || key == Key.RightShift ||
@@ -103,29 +97,23 @@ namespace AutoClicker
                 return;
             }
 
-            // Convert WPF Key to Virtual Key Code
             uint vk = (uint)KeyInterop.VirtualKeyFromKey(key);
 
-            // Update the hotkey
             SetNewHotkey(key, vk);
         }
 
         private void SetNewHotkey(Key key, uint virtualKey)
         {
-            // Unregister old hotkey
             UnregisterCurrentHotKey();
 
-            // Set new hotkey
             _currentHotkeyVK = virtualKey;
             HotkeyTextBox.Text = key.ToString();
 
-            // Register new hotkey
             if (_windowHandle != IntPtr.Zero)
             {
                 RegisterHotKey(_windowHandle, 1, 0, _currentHotkeyVK);
             }
 
-            // Update UI
             UpdateUIWithHotkey();
 
             MessageBox.Show($"Hotkey changed to: {key}", "Hotkey Updated",
@@ -202,7 +190,6 @@ namespace AutoClicker
 
         private void StartClicking()
         {
-            // Validate inputs
             if (!ValidateInputs())
                 return;
 
@@ -210,7 +197,6 @@ namespace AutoClicker
             _currentRunClicks = 0;
             _stopwatch.Restart();
 
-            // Update UI
             string hotkeyName = HotkeyTextBox.Text;
             if (hotkeyName == "(None)" || string.IsNullOrEmpty(hotkeyName))
             {
@@ -224,13 +210,10 @@ namespace AutoClicker
             StatusTextBlock.Text = "Running";
             StatusTextBlock.Foreground = System.Windows.Media.Brushes.Green;
 
-            // Disable configuration controls
             SetControlsEnabled(false);
 
-            // Get interval
             int interval = int.Parse(IntervalTextBox.Text);
 
-            // Start click timer
             _clickTimer = new DispatcherTimer
             {
                 Interval = TimeSpan.FromMilliseconds(interval)
@@ -238,7 +221,6 @@ namespace AutoClicker
             _clickTimer.Tick += ClickTimer_Tick;
             _clickTimer.Start();
 
-            // Start stats timer
             _statsTimer?.Start();
         }
 
@@ -247,18 +229,15 @@ namespace AutoClicker
             _isRunning = false;
             _stopwatch.Stop();
 
-            // Stop timers
             _clickTimer?.Stop();
             _statsTimer?.Stop();
 
-            // Update UI
             UpdateUIWithHotkey();
             StartStopButton.Background = new System.Windows.Media.SolidColorBrush(
                 System.Windows.Media.Color.FromRgb(76, 175, 80));
             StatusTextBlock.Text = "Stopped";
             StatusTextBlock.Foreground = System.Windows.Media.Brushes.Gray;
 
-            // Enable configuration controls
             SetControlsEnabled(true);
         }
 
@@ -266,7 +245,6 @@ namespace AutoClicker
         {
             PerformClick();
 
-            // Check if we need to stop (limited clicks mode)
             if (RepeatCountRadio.IsChecked == true)
             {
                 int maxClicks = int.Parse(ClickCountTextBox.Text);
@@ -279,11 +257,9 @@ namespace AutoClicker
 
         private void StatsTimer_Tick(object? sender, EventArgs e)
         {
-            // Update elapsed time
             TimeSpan elapsed = _stopwatch.Elapsed;
             TimeElapsedTextBlock.Text = $"{elapsed:hh\\:mm\\:ss}";
 
-            // Update click counts
             CurrentRunClicksTextBlock.Text = _currentRunClicks.ToString();
             TotalClicksTextBlock.Text = _totalClicks.ToString();
         }
@@ -292,10 +268,8 @@ namespace AutoClicker
         {
             try
             {
-                // Save current position
                 GetCursorPos(out POINT currentPos);
 
-                // Move to target position if fixed position mode
                 if (FixedPositionRadio.IsChecked == true)
                 {
                     int x = int.Parse(FixedXTextBox.Text);
@@ -303,19 +277,18 @@ namespace AutoClicker
                     SetCursorPos(x, y);
                 }
 
-                // Determine click type
                 uint downFlag, upFlag;
                 switch (ClickTypeComboBox.SelectedIndex)
                 {
-                    case 0: // Left Click
+                    case 0:
                         downFlag = MOUSEEVENTF_LEFTDOWN;
                         upFlag = MOUSEEVENTF_LEFTUP;
                         break;
-                    case 1: // Right Click
+                    case 1:
                         downFlag = MOUSEEVENTF_RIGHTDOWN;
                         upFlag = MOUSEEVENTF_RIGHTUP;
                         break;
-                    case 2: // Middle Click
+                    case 2:
                         downFlag = MOUSEEVENTF_MIDDLEDOWN;
                         upFlag = MOUSEEVENTF_MIDDLEUP;
                         break;
@@ -325,8 +298,7 @@ namespace AutoClicker
                         break;
                 }
 
-                // Perform click(s)
-                int clickCount = ClickModeComboBox.SelectedIndex == 1 ? 2 : 1; // Double or Single
+                int clickCount = ClickModeComboBox.SelectedIndex == 1 ? 2 : 1;
 
                 for (int i = 0; i < clickCount; i++)
                 {
@@ -335,18 +307,14 @@ namespace AutoClicker
 
                     if (i < clickCount - 1)
                     {
-                        // Small delay between clicks in double-click mode
                         System.Threading.Thread.Sleep(50);
                     }
                 }
 
-                // Restore cursor position if using fixed position
                 if (FixedPositionRadio.IsChecked == true && CurrentPositionRadio.IsChecked == false)
                 {
-                    // Position was already set, no need to restore
                 }
 
-                // Update statistics
                 _currentRunClicks++;
                 _totalClicks++;
             }
@@ -382,7 +350,6 @@ namespace AutoClicker
 
         private bool ValidateInputs()
         {
-            // Validate interval
             if (!int.TryParse(IntervalTextBox.Text, out int interval) || interval < 1)
             {
                 MessageBox.Show("Please enter a valid interval (minimum 1ms)", "Invalid Input",
@@ -390,7 +357,6 @@ namespace AutoClicker
                 return false;
             }
 
-            // Warn if interval is too fast
             if (interval < 10)
             {
                 var result = MessageBox.Show(
@@ -402,7 +368,6 @@ namespace AutoClicker
                     return false;
             }
 
-            // Validate fixed position if selected
             if (FixedPositionRadio.IsChecked == true)
             {
                 if (!int.TryParse(FixedXTextBox.Text, out int x) || !int.TryParse(FixedYTextBox.Text, out int y))
@@ -413,7 +378,6 @@ namespace AutoClicker
                 }
             }
 
-            // Validate click count if selected
             if (RepeatCountRadio.IsChecked == true)
             {
                 if (!int.TryParse(ClickCountTextBox.Text, out int count) || count < 1)
@@ -444,10 +408,8 @@ namespace AutoClicker
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
-            // Unregister hotkey
             UnregisterCurrentHotKey();
 
-            // Stop clicking if running
             if (_isRunning)
             {
                 StopClicking();

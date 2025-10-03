@@ -10,8 +10,6 @@
 class FileEncryption {
 private:
     std::vector<unsigned char> deriveKey(const std::string& password, const std::vector<unsigned char>& salt) {
-        // Simple key derivation using SHA-256
-        // In production, use PBKDF2 or Argon2
         SHA256 sha256;
         std::string saltedPassword = password;
         saltedPassword.insert(saltedPassword.end(), salt.begin(), salt.end());
@@ -50,7 +48,6 @@ public:
     bool encryptFile(const std::string& inputPath, const std::string& outputPath, const std::string& password) {
         std::cout << "Encrypting file: " << inputPath << std::endl;
 
-        // Read input file
         std::ifstream inFile(inputPath, std::ios::binary);
         if (!inFile) {
             std::cerr << "Error: Cannot open input file!" << std::endl;
@@ -66,36 +63,28 @@ public:
             return false;
         }
 
-        // Generate salt and IV
         auto salt = generateSalt();
         auto iv = generateIV();
 
-        // Derive encryption key
         auto key = deriveKey(password, salt);
 
-        // Pad data to block size
         size_t padding = AES_BLOCKLEN - (fileData.size() % AES_BLOCKLEN);
         if (padding != AES_BLOCKLEN) {
             fileData.insert(fileData.end(), padding, static_cast<unsigned char>(padding));
         }
 
-        // Encrypt data
         AES_ctx ctx;
         AES_init_ctx_iv(&ctx, key.data(), iv.data());
         AES_CBC_encrypt_buffer(&ctx, fileData.data(), fileData.size());
 
-        // Write encrypted file
         std::ofstream outFile(outputPath, std::ios::binary);
         if (!outFile) {
             std::cerr << "Error: Cannot create output file!" << std::endl;
             return false;
         }
 
-        // Write salt
         outFile.write(reinterpret_cast<const char*>(salt.data()), salt.size());
-        // Write IV
         outFile.write(reinterpret_cast<const char*>(iv.data()), iv.size());
-        // Write encrypted data
         outFile.write(reinterpret_cast<const char*>(fileData.data()), fileData.size());
 
         outFile.close();
@@ -111,22 +100,18 @@ public:
     bool decryptFile(const std::string& inputPath, const std::string& outputPath, const std::string& password) {
         std::cout << "Decrypting file: " << inputPath << std::endl;
 
-        // Read encrypted file
         std::ifstream inFile(inputPath, std::ios::binary);
         if (!inFile) {
             std::cerr << "Error: Cannot open input file!" << std::endl;
             return false;
         }
 
-        // Read salt
         std::vector<unsigned char> salt(16);
         inFile.read(reinterpret_cast<char*>(salt.data()), salt.size());
 
-        // Read IV
         std::vector<unsigned char> iv(AES_BLOCKLEN);
         inFile.read(reinterpret_cast<char*>(iv.data()), iv.size());
 
-        // Read encrypted data
         std::vector<unsigned char> encryptedData((std::istreambuf_iterator<char>(inFile)),
                                                   std::istreambuf_iterator<char>());
         inFile.close();
@@ -136,18 +121,14 @@ public:
             return false;
         }
 
-        // Derive decryption key
         auto key = deriveKey(password, salt);
 
-        // Decrypt data
         AES_ctx ctx;
         AES_init_ctx_iv(&ctx, key.data(), iv.data());
         AES_CBC_decrypt_buffer(&ctx, encryptedData.data(), encryptedData.size());
 
-        // Remove padding
         unsigned char padding = encryptedData.back();
         if (padding > 0 && padding <= AES_BLOCKLEN) {
-            // Verify padding
             bool validPadding = true;
             for (size_t i = encryptedData.size() - padding; i < encryptedData.size(); i++) {
                 if (encryptedData[i] != padding) {
@@ -163,7 +144,6 @@ public:
             }
         }
 
-        // Write decrypted file
         std::ofstream outFile(outputPath, std::ios::binary);
         if (!outFile) {
             std::cerr << "Error: Cannot create output file!" << std::endl;

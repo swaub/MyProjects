@@ -1,8 +1,4 @@
 #!/usr/bin/env python3
-"""
-Password Generator - Generate secure passwords with customizable length and difficulty
-Includes strength analysis and multiple generation options
-"""
 
 import random
 import string
@@ -12,16 +8,13 @@ from datetime import datetime
 
 
 class PasswordGenerator:
-    """Generate secure passwords with various difficulty levels"""
 
-    # Character sets for different difficulty levels
     LOWERCASE = string.ascii_lowercase
     UPPERCASE = string.ascii_uppercase
     DIGITS = string.digits
     SPECIAL_BASIC = "!@#$%^&*"
     SPECIAL_EXTENDED = "!@#$%^&*()-_=+[]{}|;:,.<>?/~`"
 
-    # Ambiguous characters that can be confused
     AMBIGUOUS = "0O1lI|"
 
     DIFFICULTY_LEVELS = {
@@ -58,76 +51,50 @@ class PasswordGenerator:
     }
 
     def __init__(self, length=16, difficulty=4, exclude_ambiguous=False, count=1):
-        """
-        Initialize password generator
-
-        Args:
-            length (int): Password length
-            difficulty (int): Difficulty level (1-5)
-            exclude_ambiguous (bool): Exclude ambiguous characters
-            count (int): Number of passwords to generate
-        """
-        self.length = max(4, length)  # Minimum length of 4
-        self.difficulty = max(1, min(5, difficulty))  # Clamp between 1-5
+        self.length = max(4, length)
+        self.difficulty = max(1, min(5, difficulty))
         self.exclude_ambiguous = exclude_ambiguous
         self.count = max(1, count)
 
-        # Get character set for difficulty level
         self.charset = self.DIFFICULTY_LEVELS[self.difficulty]["charset"]
 
-        # Remove ambiguous characters if requested
         if self.exclude_ambiguous:
             self.charset = ''.join(c for c in self.charset if c not in self.AMBIGUOUS)
 
     def generate(self):
-        """Generate a single password"""
         if self.difficulty == 1:
-            # Basic: just random characters
             return ''.join(random.choice(self.charset) for _ in range(self.length))
 
-        # For higher difficulties, ensure at least one character from each category
         password = []
         remaining_length = self.length
 
-        # Ensure we have at least one character from each required category
         if self.difficulty >= 2:
-            # Add at least one lowercase
             password.append(random.choice([c for c in self.LOWERCASE if c in self.charset]))
-            # Add at least one uppercase
             password.append(random.choice([c for c in self.UPPERCASE if c in self.charset]))
             remaining_length -= 2
 
         if self.difficulty >= 3:
-            # Add at least one digit
             password.append(random.choice([c for c in self.DIGITS if c in self.charset]))
             remaining_length -= 1
 
         if self.difficulty >= 4:
-            # Add at least one special character
             special_chars = self.SPECIAL_BASIC if self.difficulty == 4 else self.SPECIAL_EXTENDED
             available_special = [c for c in special_chars if c in self.charset]
             if available_special:
                 password.append(random.choice(available_special))
                 remaining_length -= 1
 
-        # Fill the rest with random characters from the full charset
         password.extend(random.choice(self.charset) for _ in range(remaining_length))
 
-        # Shuffle to avoid predictable patterns
         random.shuffle(password)
 
         return ''.join(password)
 
     def generate_multiple(self):
-        """Generate multiple passwords"""
         return [self.generate() for _ in range(self.count)]
 
     @staticmethod
     def calculate_entropy(password):
-        """
-        Calculate password entropy (bits)
-        Higher entropy = harder to crack
-        """
         charset_size = 0
 
         if re.search(r'[a-z]', password):
@@ -137,9 +104,8 @@ class PasswordGenerator:
         if re.search(r'[0-9]', password):
             charset_size += 10
         if re.search(r'[^a-zA-Z0-9]', password):
-            # Count unique special characters
             special_chars = set(c for c in password if not c.isalnum())
-            charset_size += len(special_chars) * 5  # Estimate
+            charset_size += len(special_chars) * 5
 
         if charset_size == 0:
             return 0
@@ -150,13 +116,9 @@ class PasswordGenerator:
 
     @staticmethod
     def estimate_crack_time(entropy):
-        """
-        Estimate time to crack password based on entropy
-        Assumes 10 billion guesses per second (modern hardware)
-        """
         guesses_per_second = 10_000_000_000
         total_combinations = 2 ** entropy
-        seconds = total_combinations / (2 * guesses_per_second)  # Average case
+        seconds = total_combinations / (2 * guesses_per_second)
 
         if seconds < 1:
             return "Less than 1 second"
@@ -181,7 +143,6 @@ class PasswordGenerator:
 
     @staticmethod
     def get_strength_rating(entropy):
-        """Get password strength rating based on entropy"""
         if entropy < 28:
             return "Very Weak", "🔴"
         elif entropy < 36:
@@ -195,12 +156,10 @@ class PasswordGenerator:
 
     @staticmethod
     def analyze_password(password):
-        """Analyze password strength and characteristics"""
         entropy = PasswordGenerator.calculate_entropy(password)
         crack_time = PasswordGenerator.estimate_crack_time(entropy)
         strength, emoji = PasswordGenerator.get_strength_rating(entropy)
 
-        # Character composition
         has_lower = bool(re.search(r'[a-z]', password))
         has_upper = bool(re.search(r'[A-Z]', password))
         has_digit = bool(re.search(r'[0-9]', password))
@@ -222,7 +181,6 @@ class PasswordGenerator:
 
 
 def display_banner():
-    """Display application banner"""
     print("=" * 70)
     print(f"{'PASSWORD GENERATOR':^70}")
     print("=" * 70)
@@ -230,7 +188,6 @@ def display_banner():
 
 
 def display_difficulty_options():
-    """Display available difficulty levels"""
     print("\n🔒 Difficulty Levels:")
     print("-" * 70)
     for level, info in PasswordGenerator.DIFFICULTY_LEVELS.items():
@@ -239,11 +196,9 @@ def display_difficulty_options():
 
 
 def get_user_input():
-    """Get generation parameters from user"""
     print("\n⚙️  Password Configuration:")
     print("-" * 70)
 
-    # Password length
     while True:
         try:
             length_input = input("Password length (8-128, default: 16): ").strip()
@@ -260,7 +215,6 @@ def get_user_input():
             print("\n\nExiting...")
             sys.exit(0)
 
-    # Difficulty level
     display_difficulty_options()
     while True:
         try:
@@ -278,7 +232,6 @@ def get_user_input():
             print("\n\nExiting...")
             sys.exit(0)
 
-    # Exclude ambiguous characters
     while True:
         try:
             ambiguous_input = input("\nExclude ambiguous characters (0O1lI|)? (y/N): ").strip().lower()
@@ -288,7 +241,6 @@ def get_user_input():
             print("\n\nExiting...")
             sys.exit(0)
 
-    # Number of passwords
     while True:
         try:
             count_input = input("Number of passwords to generate (1-50, default: 1): ").strip()
@@ -309,7 +261,6 @@ def get_user_input():
 
 
 def save_to_file(passwords, analyses):
-    """Save passwords to a file"""
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     filename = f"passwords_{timestamp}.txt"
 
@@ -348,13 +299,10 @@ def save_to_file(passwords, analyses):
 
 
 def main():
-    """Main function"""
     display_banner()
 
-    # Get user input
     length, difficulty, exclude_ambiguous, count = get_user_input()
 
-    # Create generator
     generator = PasswordGenerator(
         length=length,
         difficulty=difficulty,
@@ -362,7 +310,6 @@ def main():
         count=count
     )
 
-    # Generate passwords
     print("\n" + "=" * 70)
     print(f"{'GENERATED PASSWORDS':^70}")
     print("=" * 70)
@@ -378,7 +325,6 @@ def main():
     passwords = generator.generate_multiple()
     analyses = [PasswordGenerator.analyze_password(pwd) for pwd in passwords]
 
-    # Display passwords with analysis
     for i, (password, analysis) in enumerate(zip(passwords, analyses), 1):
         print(f"Password #{i}:")
         print(f"  {password}")
@@ -401,7 +347,6 @@ def main():
         if i < len(passwords):
             print("\n" + "-" * 70 + "\n")
 
-    # Ask to save
     print("\n" + "=" * 70)
     try:
         save_choice = input("\n💾 Save passwords to file? (y/N): ").strip().lower()

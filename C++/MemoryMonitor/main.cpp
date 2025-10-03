@@ -58,7 +58,6 @@ private:
                 info.pid = pe32.th32ProcessID;
                 info.name = pe32.szExeFile;
 
-                // Open process to get memory info
                 HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, pe32.th32ProcessID);
                 if (hProcess != NULL) {
                     PROCESS_MEMORY_COUNTERS_EX pmc;
@@ -68,7 +67,6 @@ private:
                         info.privateUsage = pmc.PrivateUsage;
                     }
 
-                    // Get virtual memory size
                     MEMORY_BASIC_INFORMATION mbi;
                     SIZE_T totalVirtual = 0;
                     SIZE_T address = 0;
@@ -77,7 +75,7 @@ private:
                             totalVirtual += mbi.RegionSize;
                         }
                         address = (SIZE_T)mbi.BaseAddress + mbi.RegionSize;
-                        if (address >= 0x7FFFFFFF) break; // Prevent overflow
+                        if (address >= 0x7FFFFFFF) break;
                     }
                     info.virtualSize = totalVirtual;
 
@@ -130,7 +128,6 @@ private:
     }
 
     void displayTopProcesses(std::vector<ProcessInfo>& processes, int count = 10) {
-        // Sort by working set size (current memory usage)
         std::sort(processes.begin(), processes.end(),
             [](const ProcessInfo& a, const ProcessInfo& b) {
                 return a.workingSetSize > b.workingSetSize;
@@ -178,7 +175,6 @@ private:
         std::cout << "  Private Bytes:     " << formatBytes(proc.privateUsage) << "\n";
         std::cout << "  Virtual Size:      " << formatBytes(proc.virtualSize) << "\n\n";
 
-        // Get additional info
         HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, proc.pid);
         if (hProcess != NULL) {
             FILETIME ftCreation, ftExit, ftKernel, ftUser;
@@ -285,7 +281,6 @@ public:
 
             PROCESS_MEMORY_COUNTERS_EX pmc;
             if (GetProcessMemoryInfo(hProcess, (PROCESS_MEMORY_COUNTERS*)&pmc, sizeof(pmc))) {
-                // Clear previous line
                 std::cout << "\r";
                 std::cout << "Working Set: " << std::setw(12) << formatBytes(pmc.WorkingSetSize)
                           << " | Private: " << std::setw(12) << formatBytes(pmc.PrivateUsage)
@@ -324,12 +319,10 @@ int main(int argc, char* argv[]) {
     MemoryMonitor monitor;
 
     if (argc == 1) {
-        // Interactive mode
         monitor.runInteractive();
     } else if (argc == 2 && (std::string(argv[1]) == "-h" || std::string(argv[1]) == "--help")) {
         monitor.showHelp();
     } else if (argc == 3 && std::string(argv[1]) == "-p") {
-        // Monitor specific process
         DWORD pid = std::stoul(argv[2]);
         monitor.monitorProcess(pid);
     } else {

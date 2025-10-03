@@ -12,7 +12,6 @@ class MinecraftIGN:
         self.auth_data = {}
 
     def scan_usernames(self):
-        """Scan for available Minecraft usernames"""
         print("\n=== USERNAME SCANNER ===")
         N = int(input("How many characters should the IGN have (3-16): "))
         if N < 3 or N > 16:
@@ -28,23 +27,20 @@ class MinecraftIGN:
         rate_limit_count = 0
 
         while checked_count < tries:
-            # Adaptive delay - increase if we're getting rate limited
             if rate_limit_count > 3:
-                time.sleep(3)  # Longer delay if hitting rate limits
+                time.sleep(3)
             elif rate_limit_count > 1:
                 time.sleep(1.5)
             else:
-                time.sleep(0.8)  # Slightly longer base delay
+                time.sleep(0.8)
 
             ran_str = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz1234567890_', k=N))
 
-            # Check if a UUID exists for this username
             url = f'https://api.mojang.com/users/profiles/minecraft/{ran_str}'
 
             try:
                 response = requests.get(url, timeout=5)
 
-                # If status 200 and has content, name is TAKEN
                 if response.status_code == 200:
                     try:
                         data = response.json()
@@ -55,13 +51,11 @@ class MinecraftIGN:
                     except:
                         print(f"{ran_str} is NOT available (taken).")
 
-                # If 204 or 404, name MIGHT be available
                 elif response.status_code == 204 or response.status_code == 404:
                     print(f"✓ AVAILABLE IGN found! {ran_str}")
                     self.available_igns.append(ran_str)
-                    rate_limit_count = 0  # Reset rate limit counter on success
+                    rate_limit_count = 0
 
-                # Rate limiting
                 elif response.status_code == 429:
                     rate_limit_count += 1
                     print(f"{ran_str} - Rate limited (#{rate_limit_count}), adjusting delay...")
@@ -75,7 +69,6 @@ class MinecraftIGN:
 
             checked_count += 1
 
-        # Show results
         print(f"\n{'='*40}")
         print(f"Finished checking {tries} usernames.")
         if self.available_igns:
@@ -88,7 +81,6 @@ class MinecraftIGN:
             return False
 
     def setup_sniper(self):
-        """Setup authentication for sniping"""
         print("\n=== SNIPER SETUP ===")
         print("To snipe usernames, you need your Minecraft account credentials.")
         print("Note: Bearer token can be obtained from your Minecraft launcher.")
@@ -100,7 +92,6 @@ class MinecraftIGN:
         print("\n✓ Authentication configured!")
 
     async def snipe_username(self, target_ign, drop_time=None):
-        """Attempt to claim a username"""
         auth = "Bearer " + self.auth_data['bearer_key']
 
         if drop_time:
@@ -133,7 +124,6 @@ class MinecraftIGN:
             return False
 
     def save_results(self):
-        """Save found usernames to a file"""
         if not self.available_igns:
             print("No usernames to save.")
             return
@@ -202,7 +192,6 @@ async def main():
                         drop_time = input("Enter drop time (HH:MM:SS): ")
                         await tool.snipe_username(target, drop_time)
 
-                    # Remove from available list after attempting
                     tool.available_igns.remove(target)
                 else:
                     print("Invalid selection!")

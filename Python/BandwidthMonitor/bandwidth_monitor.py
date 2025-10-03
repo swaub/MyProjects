@@ -1,8 +1,4 @@
 #!/usr/bin/env python3
-"""
-Bandwidth Monitor - Real-time network traffic monitoring utility
-Monitors upload/download speeds and total data transferred across network interfaces
-"""
 
 import psutil
 import time
@@ -13,26 +9,17 @@ from datetime import datetime
 
 class BandwidthMonitor:
     def __init__(self, interface=None, refresh_interval=1):
-        """
-        Initialize the bandwidth monitor
-
-        Args:
-            interface (str): Specific network interface to monitor (None for all)
-            refresh_interval (float): Update interval in seconds
-        """
         self.interface = interface
         self.refresh_interval = refresh_interval
         self.start_time = datetime.now()
 
     @staticmethod
     def get_interfaces():
-        """Get list of available network interfaces"""
         stats = psutil.net_io_counters(pernic=True)
         return list(stats.keys())
 
     @staticmethod
     def format_bytes(bytes_value):
-        """Convert bytes to human-readable format"""
         for unit in ['B', 'KB', 'MB', 'GB', 'TB']:
             if bytes_value < 1024.0:
                 return f"{bytes_value:.2f} {unit}"
@@ -41,7 +28,6 @@ class BandwidthMonitor:
 
     @staticmethod
     def format_speed(bytes_per_sec):
-        """Convert bytes per second to human-readable format"""
         for unit in ['B/s', 'KB/s', 'MB/s', 'GB/s']:
             if bytes_per_sec < 1024.0:
                 return f"{bytes_per_sec:.2f} {unit}"
@@ -49,11 +35,9 @@ class BandwidthMonitor:
         return f"{bytes_per_sec:.2f} TB/s"
 
     def clear_screen(self):
-        """Clear the terminal screen"""
         os.system('cls' if os.name == 'nt' else 'clear')
 
     def get_network_stats(self):
-        """Get current network statistics"""
         if self.interface:
             stats = psutil.net_io_counters(pernic=True)
             if self.interface in stats:
@@ -65,7 +49,6 @@ class BandwidthMonitor:
             return psutil.net_io_counters()
 
     def monitor(self):
-        """Start monitoring bandwidth"""
         print("Bandwidth Monitor Started")
         print("=" * 60)
 
@@ -78,11 +61,9 @@ class BandwidthMonitor:
         print("\nPress Ctrl+C to stop\n")
         time.sleep(2)
 
-        # Get initial stats
         prev_stats = self.get_network_stats()
         prev_time = time.time()
 
-        # Track totals since start
         total_sent_start = prev_stats.bytes_sent
         total_recv_start = prev_stats.bytes_recv
 
@@ -90,31 +71,24 @@ class BandwidthMonitor:
             while True:
                 time.sleep(self.refresh_interval)
 
-                # Get current stats
                 curr_stats = self.get_network_stats()
                 curr_time = time.time()
 
-                # Calculate time difference
                 time_diff = curr_time - prev_time
 
-                # Calculate bytes transferred
                 bytes_sent = curr_stats.bytes_sent - prev_stats.bytes_sent
                 bytes_recv = curr_stats.bytes_recv - prev_stats.bytes_recv
 
-                # Calculate speeds
                 upload_speed = bytes_sent / time_diff
                 download_speed = bytes_recv / time_diff
 
-                # Calculate totals since start
                 total_sent = curr_stats.bytes_sent - total_sent_start
                 total_recv = curr_stats.bytes_recv - total_recv_start
 
-                # Calculate session duration
                 duration = datetime.now() - self.start_time
                 hours, remainder = divmod(duration.seconds, 3600)
                 minutes, seconds = divmod(remainder, 60)
 
-                # Display stats
                 self.clear_screen()
                 print("=" * 60)
                 print(f"{'BANDWIDTH MONITOR':^60}")
@@ -156,7 +130,6 @@ class BandwidthMonitor:
                 print("\n" + "=" * 60)
                 print("Press Ctrl+C to stop monitoring")
 
-                # Update previous stats
                 prev_stats = curr_stats
                 prev_time = curr_time
 
@@ -165,7 +138,6 @@ class BandwidthMonitor:
             print("Monitoring stopped")
             print("=" * 60)
 
-            # Final statistics
             final_stats = self.get_network_stats()
             duration = datetime.now() - self.start_time
             total_seconds = duration.total_seconds()
@@ -190,12 +162,10 @@ class BandwidthMonitor:
 
 
 def main():
-    """Main function"""
     print("=" * 60)
     print(f"{'BANDWIDTH MONITOR':^60}")
     print("=" * 60)
 
-    # Get available interfaces
     interfaces = BandwidthMonitor.get_interfaces()
 
     print("\nAvailable Network Interfaces:")
@@ -205,7 +175,6 @@ def main():
     print(f"  {len(interfaces) + 1}. Monitor all interfaces")
     print("-" * 60)
 
-    # Interface selection
     while True:
         try:
             choice = input("\nSelect interface (or press Enter for all): ").strip()
@@ -229,7 +198,6 @@ def main():
             print("\nExiting...")
             sys.exit(0)
 
-    # Refresh interval selection
     while True:
         try:
             interval_input = input("\nRefresh interval in seconds (default: 1): ").strip()
@@ -249,7 +217,6 @@ def main():
             print("\nExiting...")
             sys.exit(0)
 
-    # Start monitoring
     monitor = BandwidthMonitor(interface=selected_interface, refresh_interval=refresh_interval)
     monitor.monitor()
 

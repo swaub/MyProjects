@@ -11,9 +11,11 @@ MyProjects/
 │       └── TaskMaster/        - Task management WPF application
 │
 ├── Python/
-│   └── Automation/
-│       ├── MCIGN_Scan_and_Snipe/  - Minecraft IGN scanning tool
-│       └── TextToSpeech/          - Text-to-speech conversion utility
+│   ├── Automation/
+│   │   ├── MCIGN_Scan_and_Snipe/  - Minecraft IGN scanning tool
+│   │   └── TextToSpeech/          - Text-to-speech conversion utility
+│   └── NetworkTools/
+│       └── BandwidthMonitor/      - Real-time network bandwidth monitor
 │
 └── C++/                   - [Planned] C++ projects
     ├── Games/
@@ -42,6 +44,12 @@ MyProjects/
 - **Description:** Convert text files to speech with customizable voice options
 - **Category:** Automation
 - **Tech:** Python 3.x with TTS libraries
+
+#### [BandwidthMonitor](Python/NetworkTools/BandwidthMonitor/)
+- **Description:** Real-time network bandwidth monitoring utility with upload/download speed tracking
+- **Category:** Network Tools
+- **Tech:** Python 3.x with psutil
+- **Features:** Interface selection, session statistics, packet tracking, clean real-time display
 
 ### C++ Projects
 *Coming soon - Directory structure prepared*

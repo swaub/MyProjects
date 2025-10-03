@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ApplicationIcon>app.ico</ApplicationIcon>
+    <AssemblyName>AutoClicker</AssemblyName>
+    <RootNamespace>AutoClicker</RootNamespace>
+    <Version>1.0.0</Version>
+    <Authors>swaub</Authors>
+    <Description>Configurable auto-clicking utility for Windows</Description>
+  </PropertyGroup>
+
+</Project>

@@ -1,0 +1,217 @@
+<Window x:Class="AutoClicker.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Auto Clicker" Height="550" Width="450"
+        ResizeMode="CanMinimize"
+        WindowStartupLocation="CenterScreen"
+        Icon="app.ico">
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Title -->
+        <TextBlock Grid.Row="0"
+                   Text="🖱️ Auto Clicker"
+                   FontSize="24"
+                   FontWeight="Bold"
+                   HorizontalAlignment="Center"
+                   Margin="0,0,0,10"/>
+
+        <!-- Click Settings -->
+        <GroupBox Grid.Row="1" Header="Click Settings">
+            <StackPanel>
+                <!-- Click Interval -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="80"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="0" Content="Click Interval:"/>
+                    <TextBox Grid.Column="1" x:Name="IntervalTextBox" Text="100"/>
+                    <Label Grid.Column="2" Content="ms"/>
+                </Grid>
+
+                <!-- Click Type -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="0" Content="Click Type:"/>
+                    <ComboBox Grid.Column="1" x:Name="ClickTypeComboBox" SelectedIndex="0">
+                        <ComboBoxItem Content="Left Click"/>
+                        <ComboBoxItem Content="Right Click"/>
+                        <ComboBoxItem Content="Middle Click"/>
+                    </ComboBox>
+                </Grid>
+
+                <!-- Click Mode -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="0" Content="Click Mode:"/>
+                    <ComboBox Grid.Column="1" x:Name="ClickModeComboBox" SelectedIndex="0">
+                        <ComboBoxItem Content="Single Click"/>
+                        <ComboBoxItem Content="Double Click"/>
+                    </ComboBox>
+                </Grid>
+            </StackPanel>
+        </GroupBox>
+
+        <!-- Position Settings -->
+        <GroupBox Grid.Row="2" Header="Position Settings">
+            <StackPanel>
+                <RadioButton x:Name="CurrentPositionRadio"
+                             Content="Click at current cursor position"
+                             IsChecked="True"
+                             Margin="5"/>
+
+                <RadioButton x:Name="FixedPositionRadio"
+                             Content="Click at fixed position"
+                             Margin="5"/>
+
+                <Grid Margin="20,5,5,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="0" Content="X:" IsEnabled="{Binding IsChecked, ElementName=FixedPositionRadio}"/>
+                    <TextBox Grid.Column="1" x:Name="FixedXTextBox" Text="0" IsEnabled="{Binding IsChecked, ElementName=FixedPositionRadio}"/>
+                    <Label Grid.Column="2" Content="Y:" IsEnabled="{Binding IsChecked, ElementName=FixedPositionRadio}"/>
+                    <TextBox Grid.Column="3" x:Name="FixedYTextBox" Text="0" IsEnabled="{Binding IsChecked, ElementName=FixedPositionRadio}"/>
+                    <Button Grid.Column="4"
+                            Content="Get Current"
+                            Click="GetCurrentPosition_Click"
+                            IsEnabled="{Binding IsChecked, ElementName=FixedPositionRadio}"/>
+                </Grid>
+            </StackPanel>
+        </GroupBox>
+
+        <!-- Repeat Settings -->
+        <GroupBox Grid.Row="3" Header="Repeat Settings">
+            <StackPanel>
+                <RadioButton x:Name="RepeatForeverRadio"
+                             Content="Repeat until stopped (F6)"
+                             IsChecked="True"
+                             Margin="5"/>
+
+                <RadioButton x:Name="RepeatCountRadio"
+                             Content="Repeat for a specific number of times"
+                             Margin="5"/>
+
+                <Grid Margin="20,5,5,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="0" Content="Click Count:" IsEnabled="{Binding IsChecked, ElementName=RepeatCountRadio}"/>
+                    <TextBox Grid.Column="1"
+                             x:Name="ClickCountTextBox"
+                             Text="100"
+                             IsEnabled="{Binding IsChecked, ElementName=RepeatCountRadio}"/>
+                </Grid>
+            </StackPanel>
+        </GroupBox>
+
+        <!-- Control Buttons -->
+        <GroupBox Grid.Row="4" Header="Controls">
+            <StackPanel>
+                <Button x:Name="StartStopButton"
+                        Content="▶️ Start (F6)"
+                        Click="StartStop_Click"
+                        FontSize="14"
+                        FontWeight="Bold"
+                        Height="40"
+                        Background="#4CAF50"
+                        Foreground="White"/>
+
+                <TextBlock TextAlignment="Center"
+                           Margin="5"
+                           FontSize="12"
+                           Foreground="Gray">
+                    Press F6 to start/stop clicking
+                </TextBlock>
+            </StackPanel>
+        </GroupBox>
+
+        <!-- Statistics -->
+        <GroupBox Grid.Row="5" Header="Statistics">
+            <StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Row="0" Grid.Column="0" Content="Status:"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1"
+                               x:Name="StatusTextBlock"
+                               Text="Idle"
+                               FontWeight="Bold"
+                               Foreground="Gray"
+                               VerticalAlignment="Center"
+                               Margin="5"/>
+
+                    <Label Grid.Row="1" Grid.Column="0" Content="Total Clicks:"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1"
+                               x:Name="TotalClicksTextBlock"
+                               Text="0"
+                               VerticalAlignment="Center"
+                               Margin="5"/>
+
+                    <Label Grid.Row="2" Grid.Column="0" Content="Current Run:"/>
+                    <TextBlock Grid.Row="2" Grid.Column="1"
+                               x:Name="CurrentRunClicksTextBlock"
+                               Text="0"
+                               VerticalAlignment="Center"
+                               Margin="5"/>
+
+                    <Label Grid.Row="3" Grid.Column="0" Content="Time Elapsed:"/>
+                    <TextBlock Grid.Row="3" Grid.Column="1"
+                               x:Name="TimeElapsedTextBlock"
+                               Text="00:00:00"
+                               VerticalAlignment="Center"
+                               Margin="5"/>
+                </Grid>
+
+                <Button Content="Reset Statistics"
+                        Click="ResetStats_Click"
+                        Margin="5,10,5,5"/>
+            </StackPanel>
+        </GroupBox>
+
+        <!-- Footer -->
+        <TextBlock Grid.Row="6"
+                   Text="⚠️ Use responsibly. Auto-clicking may violate terms of service of some applications."
+                   TextWrapping="Wrap"
+                   FontSize="10"
+                   Foreground="DarkRed"
+                   HorizontalAlignment="Center"
+                   Margin="0,10,0,0"/>
+    </Grid>
+</Window>

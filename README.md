@@ -8,6 +8,7 @@ A comprehensive repository of scripts, tools, and applications organized by prog
 MyProjects/
 ├── C#/
 │   └── Automation/
+│       ├── AutoClicker/       - Configurable auto-clicking utility
 │       └── TaskMaster/        - Task management WPF application
 │
 ├── Python/
@@ -28,6 +29,12 @@ MyProjects/
 ## 🚀 Quick Navigation
 
 ### C# Projects
+
+#### [AutoClicker](C%23/Automation/AutoClicker/)
+- **Description:** Configurable auto-clicking utility for Windows with hotkey control
+- **Category:** Automation
+- **Tech:** .NET 6.0 WPF with Win32 API
+- **Features:** Multiple click types, position modes, F6 hotkey, statistics tracking, customizable intervals
 
 #### [TaskMaster](C%23/Automation/TaskMaster/)
 - **Description:** A modern WPF task management application for Windows

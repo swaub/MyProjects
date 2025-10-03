@@ -17,8 +17,9 @@ A configurable Windows auto-clicking utility built with WPF. Automate repetitive
 - **Limited** - Stop after specific number of clicks
 
 ### Hotkey Control
-- **F6** - Global hotkey to start/stop clicking
+- **Customizable Hotkey** - Choose ANY key as your start/stop hotkey
 - Works even when window is minimized or in background
+- Default: F6 (can be changed)
 
 ### Statistics Tracking
 - Total clicks (lifetime)
@@ -70,6 +71,7 @@ A configurable Windows auto-clicking utility built with WPF. Automate repetitive
    - Set click interval (e.g., 100ms = 10 clicks per second)
    - Choose click type (Left/Right/Middle)
    - Select click mode (Single/Double)
+   - Set your hotkey (default: F6)
 
 3. **Choose Position**
    - **Current Position**: Clicks wherever cursor is pointing
@@ -80,12 +82,18 @@ A configurable Windows auto-clicking utility built with WPF. Automate repetitive
    - **Repeat Forever**: Clicks until you press F6 to stop
    - **Repeat Count**: Stops after specified number of clicks
 
-5. **Start Clicking**
-   - Press F6 or click "Start" button
+5. **Set Hotkey (Optional)**
+   - Click in the "Start/Stop Key" box
+   - Press any key you want to use (e.g., F9, Pause, Insert)
+   - Your hotkey is immediately registered
+   - Click "Clear" to remove hotkey and use button only
+
+6. **Start Clicking**
+   - Press your hotkey or click "Start" button
    - Application begins auto-clicking based on configuration
 
-6. **Stop Clicking**
-   - Press F6 again or click "Stop" button
+7. **Stop Clicking**
+   - Press your hotkey again or click "Stop" button
 
 ### Example Use Cases
 
@@ -254,8 +262,23 @@ Repeat: Count = 1000
 
 | Key | Action |
 |-----|--------|
-| F6 | Start/Stop clicking |
+| Your Chosen Hotkey | Start/Stop clicking (default: F6) |
 | Alt+F4 | Close application |
+
+### Changing Your Hotkey
+
+1. Click in the "Start/Stop Key" textbox
+2. Press any key you want to use
+3. The hotkey is immediately registered
+4. All supported keys:
+   - Function keys (F1-F12)
+   - Letter keys (A-Z)
+   - Number keys (0-9)
+   - Special keys (Insert, Delete, Home, End, Page Up, Page Down, Pause, etc.)
+   - Arrow keys
+   - And more!
+
+**Note:** Modifier keys alone (Ctrl, Alt, Shift) cannot be used as hotkeys.
 
 ## Version History
 

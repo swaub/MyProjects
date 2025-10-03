@@ -40,12 +40,21 @@ namespace AutoClicker
         private int _totalClicks = 0;
         private int _currentRunClicks = 0;
         private Stopwatch _stopwatch = new Stopwatch();
+        private uint _currentHotkeyVK = 0x75; // Default F6
+        private IntPtr _windowHandle;
 
         public MainWindow()
         {
             InitializeComponent();
-            RegisterHotKey();
             InitializeTimers();
+            UpdateUIWithHotkey();
+        }
+
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
+            _windowHandle = new System.Windows.Interop.WindowInteropHelper(this).Handle;
+            RegisterCurrentHotKey();
         }
 
         private void InitializeTimers()
@@ -58,15 +67,103 @@ namespace AutoClicker
             _statsTimer.Tick += StatsTimer_Tick;
         }
 
-        private void RegisterHotKey()
+        private void RegisterCurrentHotKey()
         {
-            // Register F6 as global hotkey
-            var window = new System.Windows.Interop.WindowInteropHelper(this);
-            var source = System.Windows.Interop.HwndSource.FromHwnd(window.Handle);
+            var source = System.Windows.Interop.HwndSource.FromHwnd(_windowHandle);
             source?.AddHook(HwndHook);
 
-            // Register F6 (VK_F6 = 0x75)
-            RegisterHotKey(window.Handle, 1, 0, 0x75);
+            // Register the current hotkey
+            if (_currentHotkeyVK != 0)
+            {
+                RegisterHotKey(_windowHandle, 1, 0, _currentHotkeyVK);
+            }
+        }
+
+        private void UnregisterCurrentHotKey()
+        {
+            if (_windowHandle != IntPtr.Zero && _currentHotkeyVK != 0)
+            {
+                UnregisterHotKey(_windowHandle, 1);
+            }
+        }
+
+        private void HotkeyTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = true;
+
+            // Get the key pressed
+            Key key = e.Key == Key.System ? e.SystemKey : e.Key;
+
+            // Ignore modifier keys alone
+            if (key == Key.LeftCtrl || key == Key.RightCtrl ||
+                key == Key.LeftAlt || key == Key.RightAlt ||
+                key == Key.LeftShift || key == Key.RightShift ||
+                key == Key.LWin || key == Key.RWin)
+            {
+                return;
+            }
+
+            // Convert WPF Key to Virtual Key Code
+            uint vk = (uint)KeyInterop.VirtualKeyFromKey(key);
+
+            // Update the hotkey
+            SetNewHotkey(key, vk);
+        }
+
+        private void SetNewHotkey(Key key, uint virtualKey)
+        {
+            // Unregister old hotkey
+            UnregisterCurrentHotKey();
+
+            // Set new hotkey
+            _currentHotkeyVK = virtualKey;
+            HotkeyTextBox.Text = key.ToString();
+
+            // Register new hotkey
+            if (_windowHandle != IntPtr.Zero)
+            {
+                RegisterHotKey(_windowHandle, 1, 0, _currentHotkeyVK);
+            }
+
+            // Update UI
+            UpdateUIWithHotkey();
+
+            MessageBox.Show($"Hotkey changed to: {key}", "Hotkey Updated",
+                MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void ClearHotkey_Click(object sender, RoutedEventArgs e)
+        {
+            var result = MessageBox.Show(
+                "Are you sure you want to clear the hotkey?\n\n" +
+                "You will need to use the Start button to begin clicking.",
+                "Clear Hotkey",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                UnregisterCurrentHotKey();
+                _currentHotkeyVK = 0;
+                HotkeyTextBox.Text = "(None)";
+                UpdateUIWithHotkey();
+            }
+        }
+
+        private void UpdateUIWithHotkey()
+        {
+            string hotkeyName = HotkeyTextBox.Text;
+
+            if (hotkeyName == "(None)" || string.IsNullOrEmpty(hotkeyName))
+            {
+                StartStopButton.Content = "▶️ Start";
+                HotkeyHintTextBlock.Text = "No hotkey set - use Start button only";
+            }
+            else
+            {
+                StartStopButton.Content = $"▶️ Start ({hotkeyName})";
+                HotkeyHintTextBlock.Text = $"Press {hotkeyName} to start/stop clicking";
+            }
         }
 
         [DllImport("user32.dll")]
@@ -114,7 +211,15 @@ namespace AutoClicker
             _stopwatch.Restart();
 
             // Update UI
-            StartStopButton.Content = "⏸️ Stop (F6)";
+            string hotkeyName = HotkeyTextBox.Text;
+            if (hotkeyName == "(None)" || string.IsNullOrEmpty(hotkeyName))
+            {
+                StartStopButton.Content = "⏸️ Stop";
+            }
+            else
+            {
+                StartStopButton.Content = $"⏸️ Stop ({hotkeyName})";
+            }
             StartStopButton.Background = System.Windows.Media.Brushes.Red;
             StatusTextBlock.Text = "Running";
             StatusTextBlock.Foreground = System.Windows.Media.Brushes.Green;
@@ -147,7 +252,7 @@ namespace AutoClicker
             _statsTimer?.Stop();
 
             // Update UI
-            StartStopButton.Content = "▶️ Start (F6)";
+            UpdateUIWithHotkey();
             StartStopButton.Background = new System.Windows.Media.SolidColorBrush(
                 System.Windows.Media.Color.FromRgb(76, 175, 80));
             StatusTextBlock.Text = "Stopped";
@@ -334,13 +439,13 @@ namespace AutoClicker
             RepeatForeverRadio.IsEnabled = enabled;
             RepeatCountRadio.IsEnabled = enabled;
             ClickCountTextBox.IsEnabled = enabled && RepeatCountRadio.IsChecked == true;
+            HotkeyTextBox.IsEnabled = enabled;
         }
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
             // Unregister hotkey
-            var window = new System.Windows.Interop.WindowInteropHelper(this);
-            UnregisterHotKey(window.Handle, 1);
+            UnregisterCurrentHotKey();
 
             // Stop clicking if running
             if (_isRunning)

@@ -10,6 +10,7 @@ A curated collection of open-source utilities for automation, system maintenance
 *   **[FocusCLI](Python/FocusCLI/)** - Minimalist Pomodoro timer for the terminal.
 *   **[GoDark](Python/GoDark/)** - Strip metadata (EXIF/GPS) from images for privacy.
 *   **[LinkRotFinder](Python/LinkRotFinder/)** - Scan documentation for broken hyperlinks.
+*   **[PortScanner](Python/PortScanner/)** - Multi-threaded TCP port scanner.
 *   **[QuickWatermark](Python/QuickWatermark/)** - Batch apply watermarks to images.
 *   **[SysDash](Python/SysDash/)** - Real-time terminal system monitor (CPU/RAM/Disk).
 *   **[TextToSpeech](Python/TextToSpeech/)** - Convert text files to neural audio.

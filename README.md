@@ -6,8 +6,11 @@ A curated collection of open-source utilities for automation, system maintenance
 
 ### 🐍 Python Utilities
 *   **[DuplicateHunter](Python/DuplicateHunter/)** - Find and remove duplicate files to save space.
+*   **[FocusCLI](Python/FocusCLI/)** - Minimalist Pomodoro timer for the terminal.
+*   **[GoDark](Python/GoDark/)** - Strip metadata (EXIF/GPS) from images for privacy.
 *   **[LinkRotFinder](Python/LinkRotFinder/)** - Scan documentation for broken hyperlinks.
 *   **[QuickWatermark](Python/QuickWatermark/)** - Batch apply watermarks to images.
+*   **[SysDash](Python/SysDash/)** - Real-time terminal system monitor (CPU/RAM/Disk).
 *   **[TextToSpeech](Python/TextToSpeech/)** - Convert text files to neural audio.
 *   **[TranscriptHub](Python/TranscriptHub/)** - Download YouTube transcripts (GUI).
 
@@ -42,6 +45,4 @@ This repository is licensed under the MIT License. See [LICENSE](LICENSE) for de
 
 ---
 *Maintained by swaub*
-
----
 *Last Updated: February 2026*

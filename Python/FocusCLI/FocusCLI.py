@@ -27,22 +27,26 @@ def notify(title, message):
 
 def timer(minutes, label):
     """Runs a countdown timer."""
-    seconds = minutes * 60
-    total = seconds
+    duration = minutes * 60
+    end_time = time.time() + duration
     
     print(f"--- Starting {label}: {minutes} minutes ---")
     
     try:
-        while seconds > 0:
-            mins, secs = divmod(seconds, 60)
+        while True:
+            remaining = int(end_time - time.time())
+            
+            if remaining <= 0:
+                break
+                
+            mins, secs = divmod(remaining, 60)
             timer_display = f"{mins:02d}:{secs:02d}"
             
             # Print on same line
             sys.stdout.write(f"\r⏳ {label}: {timer_display} remaining...  ")
             sys.stdout.flush()
             
-            time.sleep(1)
-            seconds -= 1
+            time.sleep(0.5) # Update twice a second for smoother feel
             
         sys.stdout.write(f"\r✅ {label}: 00:00 - Done!                 \n")
         return True

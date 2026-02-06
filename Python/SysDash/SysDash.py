@@ -12,49 +12,55 @@ import os
 console = Console()
 
 def get_cpu_panel():
-    cpu_percent = psutil.cpu_percent(interval=None, percpu=True)
-    avg_cpu = sum(cpu_percent) / len(cpu_percent)
-    
-    table = Table(box=None, expand=True, show_header=False)
-    table.add_column("Core", style="cyan")
-    table.add_column("Usage", style="green")
-    
-    for i, p in enumerate(cpu_percent):
-        color = "green" if p < 60 else "yellow" if p < 85 else "red"
-        bar_len = int(p / 5)
-        bar = f"[{color}]{'|' * bar_len}[/{color}]"
-        table.add_row(f"Core {i}", f"{p:>4.1f}% {bar}")
+    try:
+        cpu_percent = psutil.cpu_percent(interval=None, percpu=True)
+        avg_cpu = sum(cpu_percent) / len(cpu_percent) if cpu_percent else 0
         
-    return Panel(
-        table, 
-        title=f"CPU Usage ({avg_cpu:.1f}%)", 
-        border_style="blue"
-    )
+        table = Table(box=None, expand=True, show_header=False)
+        table.add_column("Core", style="cyan")
+        table.add_column("Usage", style="green")
+        
+        for i, p in enumerate(cpu_percent):
+            color = "green" if p < 60 else "yellow" if p < 85 else "red"
+            bar_len = int(p / 5)
+            bar = f"[{color}]{'|' * bar_len}[/{color}]"
+            table.add_row(f"Core {i}", f"{p:>4.1f}% {bar}")
+            
+        return Panel(
+            table, 
+            title=f"CPU Usage ({avg_cpu:.1f}%)", 
+            border_style="blue"
+        )
+    except Exception as e:
+        return Panel(f"Error fetching CPU stats: {e}", title="CPU Error", border_style="red")
 
 def get_mem_panel():
-    mem = psutil.virtual_memory()
-    swap = psutil.swap_memory()
-    
-    table = Table(box=None, expand=True)
-    table.add_column("Type", style="cyan")
-    table.add_column("Used", style="yellow")
-    table.add_column("Total", style="white")
-    table.add_column("%", style="magenta")
-    
-    table.add_row(
-        "RAM", 
-        f"{mem.used / (1024**3):.1f} GB", 
-        f"{mem.total / (1024**3):.1f} GB", 
-        f"{mem.percent}%"
-    )
-    table.add_row(
-        "Swap", 
-        f"{swap.used / (1024**3):.1f} GB", 
-        f"{swap.total / (1024**3):.1f} GB", 
-        f"{swap.percent}%"
-    )
+    try:
+        mem = psutil.virtual_memory()
+        swap = psutil.swap_memory()
+        
+        table = Table(box=None, expand=True)
+        table.add_column("Type", style="cyan")
+        table.add_column("Used", style="yellow")
+        table.add_column("Total", style="white")
+        table.add_column("%", style="magenta")
+        
+        table.add_row(
+            "RAM", 
+            f"{mem.used / (1024**3):.1f} GB", 
+            f"{mem.total / (1024**3):.1f} GB", 
+            f"{mem.percent}%"
+        )
+        table.add_row(
+            "Swap", 
+            f"{swap.used / (1024**3):.1f} GB", 
+            f"{swap.total / (1024**3):.1f} GB", 
+            f"{swap.percent}%"
+        )
 
-    return Panel(table, title="Memory", border_style="green")
+        return Panel(table, title="Memory", border_style="green")
+    except Exception as e:
+         return Panel(f"Error fetching Memory stats: {e}", title="Memory Error", border_style="red")
 
 def get_disk_panel():
     table = Table(box=None, expand=True)

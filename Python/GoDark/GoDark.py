@@ -22,6 +22,10 @@ def strip_metadata(input_path, output_path):
         image_without_exif.save(output_path)
         print(f"✓ Cleaned: {os.path.basename(input_path)}")
         return True
+    except (IOError, OSError, ValueError) as e:
+        # Catches UnidentifiedImageError (subclass of OSError in recent Pillow)
+        print(f"✗ Failed (Invalid Image): {os.path.basename(input_path)} - {str(e)}")
+        return False
     except Exception as e:
         print(f"✗ Failed: {os.path.basename(input_path)} - {str(e)}")
         return False

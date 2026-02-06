@@ -5,6 +5,7 @@ A curated collection of open-source utilities for automation, system maintenance
 ## 📂 Repository Structure
 
 ### 🐍 Python Utilities
+*   **[ClipSync](Python/ClipSync/)** - Share clipboard text across your local network.
 *   **[DuplicateHunter](Python/DuplicateHunter/)** - Find and remove duplicate files to save space.
 *   **[FocusCLI](Python/FocusCLI/)** - Minimalist Pomodoro timer for the terminal.
 *   **[GoDark](Python/GoDark/)** - Strip metadata (EXIF/GPS) from images for privacy.
